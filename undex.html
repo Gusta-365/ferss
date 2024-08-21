@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre con Ventana Emergente</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            /* Color nude */
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .envelope {
+            width: 280px;
+            height: 160px;
+            background-color: #ffffff;
+            border: 2px solid #d4a6a6;
+            /* Color nude oscuro */
+            position: relative;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s ease-in-out;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .envelope:hover {
+            transform: scale(1.05);
+            animation: pulse 1s infinite;
+        }
+
+        .flap {
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-bottom: 90px solid #ffffff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: bottom;
+            transform: rotateX(0deg);
+            transition: transform 0.6s ease;
+        }
+
+        .seal {
+            width: 50px;
+            height: 50px;
+            background-color: #f7a6a6;
+            /* Color nude claro */
+            border-radius: 50%;
+            color: white;
+            font-size: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .seal:hover {
+            background-color: #f28e8e;
+            /* Color nude más oscuro */
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.5s ease, bounceIn 1s ease;
+            text-align: center;
+            overflow: hidden;
+            background-image: url('https://www.example.com/horse.png');
+            /* Cambia la URL a la imagen del caballo */
+            background-size: 150px 150px;
+            /* Tamaño del caballo */
+            background-position: bottom right;
+            /* Posición del caballo */
+            background-repeat: no-repeat;
+            background-color: #ffffff;
+            /* Fondo blanco para el contenido */
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            color: #d4a6a6;
+            /* Color nude oscuro */
+            font-size: 28px;
+            animation: colorChange 3s infinite;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #d4a6a6;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .close:hover {
+            color: #f28e8e;
+            transform: rotate(90deg);
+        }
+
+        .question-section {
+            margin-top: 20px;
+        }
+
+        .question-button {
+            background-color: #d4a6a6;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin: 5px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .question-button:hover {
+            background-color: #c29999;
+            transform: scale(1.05);
+        }
+
+        .question-button:disabled {
+            background-color: #c29999;
+            cursor: not-allowed;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounceIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes colorChange {
+
+            0%,
+            100% {
+                color: #d4a6a6;
+            }
+
+            50% {
+                color: #f7a6a6;
+            }
+        }
+
+        @keyframes move {
+            0% {
+                transform: translateX(0) translateY(0);
+            }
+
+            100% {
+                transform: translateX(30px) translateY(30px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="envelope">
+        <div class="flap"></div>
+        <div class="seal" onclick="openModal()">✉️</div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Querida Fer</h2>
+            <p>
+                Hola Fer,<br><br>
+                Sé que estás pasando por un momento bastante estresante y agotador, y quería hacer algo para alegrarte
+                el día. A veces, una buena dosis de risas y tacos puede ser la mejor medicina.<br><br>
+                Así que aquí va una pequeña sorpresa: ¡te invito a salir a comer tacos este viernes! ¿Qué opinas? ¡Sería
+                genial pasar un rato divertido y relajante contigo para que puedas desestresarte un poco y disfrutar de
+                una buena comida!<br><br>
+                ¡Espero que te animes y podamos disfrutar de una tarde llena de tacos y risas! 😄🌮<br><br>
+                Con cariño,<br>
+                Gusito
+            </p>
+            <div class="question-section">
+                <button class="question-button" id="yesButton" onclick="answerYes()">Sí</button>
+                <button class="question-button" id="noButton" onclick="moveButton()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('myModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+
+        function answerYes() {
+            const button = document.getElementById('yesButton');
+            button.innerHTML = '¡Ya sabía yo!';
+            button.disabled = true;
+        }
+
+        function moveButton() {
+            const button = document.getElementById('noButton');
+            const modalContent = button.parentElement;
+            const maxX = modalContent.clientWidth - button.clientWidth;
+            const maxY = modalContent.clientHeight - button.clientHeight;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            button.style.position = 'absolute';
+            button.style.left = `${randomX}px`;
+            button.style.top = `${randomY}px`;
+            button.style.transition = 'transform 0.3s ease';
+            button.style.transform = 'translate(-50%, -50%)';
+
+            setTimeout(moveButton, 500);
+        }
+    </script>
+</body>
+
+</html>
